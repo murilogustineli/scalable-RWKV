@@ -1,0 +1,16 @@
+name: GPT_RWKV
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - numpy
+  - tqdm
+  - pip
+  - pip:
+    - torch==1.13.1+cu117
+    - transformers
+    - datasets
+    - tiktoken
+    - wandb
+    - deepspeed==0.7.0
+    - pytorch-lightning==1.9.2
