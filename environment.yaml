@@ -10,8 +10,9 @@ dependencies:
   - pip:
     - torch==1.13.1+cu117
     - transformers
-    - datasets
-    - tiktoken
+    - torchvision==0.14.1+cu117 
+    - torchaudio==0.13.1
+    - ninja
     - wandb
     - deepspeed==0.7.0
     - pytorch-lightning==1.9.5
