@@ -24,7 +24,7 @@ Then just minimize that terminal
 
 ### Start Conda
 From within the terminal after you've ssh'd in: `module load anaconda3`
-_Every time you log in to the head node or a compute node, you'll need to do the above and then load you rwkv_4neo environment which is set up below_
+- Every time you log in to the head node or a compute node, you'll need to do the above and then load you rwkv_4neo environment which is set up below_
 
 ### Conda Env. Set Up
 You can't specify extra-index-url from within environment file so set it up manually
