@@ -1,8 +1,9 @@
-name: GPT_RWKV
+name: rwkv_4neo
 channels:
   - defaults
   - conda-forge
 dependencies:
+  - python==3.10
   - numpy
   - tqdm
   - pip
@@ -13,4 +14,4 @@ dependencies:
     - tiktoken
     - wandb
     - deepspeed==0.7.0
-    - pytorch-lightning==1.9.2
+    - pytorch-lightning==1.9.5
