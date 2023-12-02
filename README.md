@@ -28,7 +28,7 @@ You'll probably want to use terminal to set up Conda below.
 ### Start Conda
 From within the terminal after you've ssh'd in: `module load anaconda3`
 
-_Every time you log in to the head node or a compute node, you'll need to do the above and then load you rwkv_4neo environment which is set up below._
+_Every time you log in to the head node or a compute node, you'll need to do the above and then load your rwkv_4neo environment which is set up below._
 
 ## Environment Setup
 ### Conda Environment Setup
