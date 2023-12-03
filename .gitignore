@@ -2,3 +2,6 @@ RWKV-v4neo/src/__pycache__/*
 /RWKV-v4neo/src/__pycache__/*
 RWKV-v4neo/out/*
 /RWKV-v4neo/out/*
+RWKV-v4neo/data/*
+RWKV-v4nwo/out_92M/*
+
