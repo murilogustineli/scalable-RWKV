@@ -30,6 +30,7 @@ From within the terminal after you've ssh'd in: `module load anaconda3`
 
 _Every time you log in to the head node or a compute node, you'll need to do the above and then load your rwkv_4neo environment which is set up below._
 
+
 ## Environment Setup
 ### Conda Environment Setup
 You can't specify extra-index-url from within environment file so set it up manually
@@ -62,7 +63,6 @@ pace-quota
 
 
 ## PACE-ICE Use
-
 ### Useful Commands
 ```
 $ pace-quota    #checks your storage for ~/ and ~/scratch
@@ -126,10 +126,19 @@ You’ll need to configure the following parameters to your desired values:
 - `ctx_len`: _default_=`1024`, _type_=`int`
 - `proj_dir`: _default_=`"out"`, _type_=`str`
 
-
 __IMPORTANT__.
 
-Format proj_dir as `"out_modelsize_gpu_ctxsize"`
-- Example: `"out_92M_V100_ctx1024"`
+Format proj_dir as `"out_modelsize_gpu_ctxSize_lrSize"`
+- Example: `"out_92M_V100_ctx1024_lr6e-4"`
 
 **YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
+
+### Helpful Commands
+For helpful commands on batch jobs, visit http://docs.pace.gatech.edu/gettingStarted/commands/.
+
+To see your queued jobs:
+`squeue -u <user-name>`
+
+To see your active jobs in the browser:
+1. Access https://ondemand-ice.pace.gatech.edu/pun/sys/dashboard while connected to the VPN.
+2. Click on "Jobs" at the top of the page, then "Active jobs"
