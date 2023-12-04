@@ -132,3 +132,13 @@ Format proj_dir as `"out_modelsize_gpu_ctxSize_lrSize"`
 - Example: `"out_92M_V100_ctx1024_lr6e-4"`
 
 **YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
+
+### Helpful Commands
+For helpful commands on batch jobs, visit http://docs.pace.gatech.edu/gettingStarted/commands/.
+
+To see your queued jobs:
+`squeue -u <user-name>`
+
+To see your active jobs in the browser:
+1. Access https://ondemand-ice.pace.gatech.edu/pun/sys/dashboard while connected to the VPN.
+2. Click on "Jobs" at the top of the page, then "Active jobs"
