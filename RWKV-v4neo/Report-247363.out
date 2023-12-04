@@ -1,0 +1,21 @@
+---------------------------------------
+Begin Slurm Prolog: Dec-03-2023 19:12:23
+Job ID:    247363
+User ID:   rbrock8
+Account:   no-dept
+Job name:  test_192M_V100
+Partition: coc-gpu
+---------------------------------------
+srun: fatal: SLURM_MEM_PER_CPU, SLURM_MEM_PER_GPU, and SLURM_MEM_PER_NODE are mutually exclusive.
+---------------------------------------
+Begin Slurm Epilog: Dec-03-2023 19:12:36
+Job ID:        247363
+Array Job ID:  _4294967294
+User ID:       rbrock8
+Account:       no-dept
+Job name:      test_192M_V100
+Resources:     cpu=2,gres/gpu:v100=2,mem=8G,node=1
+Rsrc Used:     cput=00:00:28,vmem=336K,walltime=00:00:14,mem=0,energy_used=0
+Partition:     coc-gpu
+Nodes:         atl1-1-02-009-33-0
+---------------------------------------
