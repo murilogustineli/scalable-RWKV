@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #SBATCH -JTrain_92M_V100                       # Job name
 #SBATCH -N1 --gres=gpu:V100:2 --ntasks-per-node=2     # Number of nodes and cores per node required
