@@ -2,7 +2,6 @@
 
 #SBATCH -JTrain_92M_A100                       # Job name
 #SBATCH -N1 --gres=gpu:A100:2 --ntasks-per-node=2     # Number of nodes and cores per node required
-#SBATCH --mem-per-gpu=8G                        # Memory per core
 #SBATCH -t8:00:00                               # Duration of the job (Ex: 15 mins)
 #SBATCH -oReport-%j.out                         # Combined output and error messages file
 #SBATCH --mail-type=BEGIN,END,FAIL              # Mail preferences
