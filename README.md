@@ -30,6 +30,7 @@ From within the terminal after you've ssh'd in: `module load anaconda3`
 
 _Every time you log in to the head node or a compute node, you'll need to do the above and then load your rwkv_4neo environment which is set up below._
 
+
 ## Environment Setup
 ### Conda Environment Setup
 You can't specify extra-index-url from within environment file so set it up manually
@@ -62,7 +63,6 @@ pace-quota
 
 
 ## PACE-ICE Use
-
 ### Useful Commands
 ```
 $ pace-quota    #checks your storage for ~/ and ~/scratch
@@ -113,3 +113,32 @@ __TO CONNECT TO 4 RTX_6000s (put in your own email):__
 ```
 salloc -N1 --mem-per-gpu=16G -t5:00:00 --gres=gpu:RTX_6000:4 --ntasks-per-node=4 --mail-type=BEGIN,END,FAIL --mail-user=<gatech_user_name>@gatech.edu
 ```
+
+## TRAINING NOTES
+You can submit batch jobs by doing:
+`sbatch batch_job.sbatch`
+
+There are two `.sbatch` files in the repo (already in main). One is set up for V100 and the other is set up for A100. The V100 has VRAM specified. Both assume 2 GPUS are being allocated for the job.
+
+You’ll need to configure the following parameters to your desired values:
+- `n_layer`: _default_=`6`, _type_=`int`
+- `n_embd`: _default_=`512`, _type_=`int`
+- `ctx_len`: _default_=`1024`, _type_=`int`
+- `proj_dir`: _default_=`"out"`, _type_=`str`
+
+__IMPORTANT__.
+
+Format proj_dir as `"out_modelsize_gpu_ctxSize_lrSize"`
+- Example: `"out_92M_V100_ctx1024_lr6e-4"`
+
+**YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
+
+### Helpful Commands
+For helpful commands on batch jobs, visit http://docs.pace.gatech.edu/gettingStarted/commands/.
+
+To see your queued jobs:
+`squeue -u <user-name>`
+
+To see your active jobs in the browser:
+1. Access https://ondemand-ice.pace.gatech.edu/pun/sys/dashboard while connected to the VPN.
+2. Click on "Jobs" at the top of the page, then "Active jobs"
