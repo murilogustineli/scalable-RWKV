@@ -1,0 +1,211 @@
+---------------------------------------
+Begin Slurm Prolog: Dec-03-2023 20:47:24
+Job ID:    247522
+User ID:   rbrock8
+Account:   no-dept
+Job name:  test_192M_V100
+Partition: coc-gpu
+---------------------------------------
+Sun Dec  3 20:47:24 2023       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.86.10              Driver Version: 535.86.10    CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla V100-PCIE-16GB           On  | 00000000:AF:00.0 Off |                    0 |
+| N/A   38C    P0              28W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+INFO:torch.distributed.nn.jit.instantiator:Created a temporary directory at /scratch/247522/tmpunk5r1pi
+INFO:torch.distributed.nn.jit.instantiator:Writing /scratch/247522/tmpunk5r1pi/_remote_module_non_scriptable.py
+INFO:pytorch_lightning.utilities.rank_zero:########## work in progress ##########
+INFO:pytorch_lightning.utilities.rank_zero:
+############################################################################
+#
+# RWKV-4 FP16 on 1x2 GPU, bsz 1x2x16=32, ddp_find_unused_parameters_false 
+#
+# Data = data/TinyStories-train (binidx), ProjDir = out_192M
+#
+# Epoch = 0 to 3 (will continue afterwards), save every 1 epoch
+#
+# Each "epoch" = 66200 steps, 2118400 samples, 2169241600 tokens
+#
+# Model = 12 n_layer, 768 n_embd, 1024 ctx_len
+#
+# Adam = lr 0.0006 to 1e-05, warmup 0 steps, beta (0.9, 0.99), eps 1e-08
+#
+# Found torch 1.13.1+cu117, recommend 1.13.1+cu117 or newer
+# Found deepspeed None, recommend 0.7.0 (faster than newer versions)
+# Found pytorch_lightning 1.9.5, recommend 1.9.5
+#
+############################################################################
+
+INFO:pytorch_lightning.utilities.rank_zero:{'load_model': '', 'wandb': '', 'proj_dir': 'out_192M', 'random_seed': -1, 'data_file': 'data/TinyStories-train', 'data_type': 'binidx', 'vocab_size': 65525, 'ctx_len': 1024, 'epoch_steps': 66200, 'epoch_count': 4, 'epoch_begin': 0, 'epoch_save': 1, 'micro_bsz': 16, 'n_layer': 12, 'n_embd': 768, 'dim_att': 768, 'dim_ffn': 3072, 'pre_ffn': 0, 'head_qk': 0, 'tiny_att_dim': 0, 'tiny_att_layer': -999, 'lr_init': 0.0006, 'lr_final': 1e-05, 'warmup_steps': 0, 'beta1': 0.9, 'beta2': 0.99, 'adam_eps': 1e-08, 'grad_cp': 0, 'dropout': 0.001, 'weight_decay': 0.001, 'weight_decay_final': -1, 'my_pile_version': 1, 'my_pile_stage': 0, 'my_pile_shift': -1, 'my_pile_edecay': 0, 'layerwise_lr': 1, 'ds_bucket_mb': 200, 'my_img_version': 0, 'my_img_size': 0, 'my_img_bit': 0, 'my_img_clip': 'x', 'my_img_clip_scale': 1, 'my_img_l1_scale': 0, 'my_img_encoder': 'x', 'my_sample_len': 0, 'my_ffn_shift': 1, 'my_att_shift': 1, 'head_size_a': 64, 'head_size_divisor': 8, 'my_pos_emb': 0, 'load_partial': 0, 'magic_prime': 0, 'my_qa_mask': 0, 'my_random_steps': 0, 'my_testing': '', 'my_exit': 99999999, 'my_exit_tokens': 0, 'logger': False, 'enable_checkpointing': False, 'default_root_dir': None, 'gradient_clip_val': 1.0, 'gradient_clip_algorithm': None, 'num_nodes': 1, 'num_processes': None, 'devices': '2', 'gpus': None, 'auto_select_gpus': None, 'tpu_cores': None, 'ipus': None, 'enable_progress_bar': True, 'overfit_batches': 0.0, 'track_grad_norm': -1, 'check_val_every_n_epoch': 100000000000000000000, 'fast_dev_run': False, 'accumulate_grad_batches': None, 'max_epochs': -1, 'min_epochs': None, 'max_steps': -1, 'min_steps': None, 'max_time': None, 'limit_train_batches': None, 'limit_val_batches': None, 'limit_test_batches': None, 'limit_predict_batches': None, 'val_check_interval': None, 'log_every_n_steps': 100000000000000000000, 'accelerator': 'gpu', 'strategy': 'ddp_find_unused_parameters_false', 'sync_batchnorm': False, 'precision': 'fp16', 'enable_model_summary': True, 'num_sanity_val_steps': 0, 'resume_from_checkpoint': None, 'profiler': None, 'benchmark': None, 'reload_dataloaders_every_n_epochs': 0, 'auto_lr_find': False, 'replace_sampler_ddp': False, 'detect_anomaly': False, 'auto_scale_batch_size': False, 'plugins': None, 'amp_backend': None, 'amp_level': None, 'move_metrics_to_cpu': False, 'multiple_trainloader_mode': 'max_size_cycle', 'inference_mode': True, 'my_timestamp': '2023-12-03-20-48-21', 'betas': (0.9, 0.99), 'real_bsz': 32, 'run_name': '65525 ctx1024 L12 D768'}
+
+INFO:pytorch_lightning.utilities.rank_zero:
+
+Note: you are using fp16 (might overflow). Try bf16 / tf32 for stable training.
+
+
+INFO:pytorch_lightning.utilities.rank_zero:Current vocab size = 65525 (make sure it's correct)
+INFO:pytorch_lightning.utilities.rank_zero:Data has 455697861 tokens.
+/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pydantic/_internal/_config.py:321: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'populate_by_name'
+* 'validate_all' has been renamed to 'validate_default'
+  warnings.warn(message, UserWarning)
+/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pydantic/_internal/_fields.py:149: UserWarning: Field "model_persistence_threshold" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pydantic/_internal/_config.py:321: UserWarning: Valid config keys have changed in V2:
+* 'validate_all' has been renamed to 'validate_default'
+  warnings.warn(message, UserWarning)
+Using /home/hice1/rbrock8/.cache/torch_extensions/py310_cu117 as PyTorch extensions root...
+Detected CUDA files, patching ldflags
+Emitting ninja build file /home/hice1/rbrock8/.cache/torch_extensions/py310_cu117/wkv_1024/build.ninja...
+Building extension module wkv_1024...
+Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
+RWKV_MY_TESTING 
+ninja: no work to do.
+Loading extension module wkv_1024...
+INFO:pytorch_lightning.utilities.rank_zero:########## Loading out_192M/rwkv-init.pth... ##########
+
+############################################################################
+#
+# Init model weight (slow for large models)...
+#
+############################################################################
+
+65525 768   -0.0006 emb.weight
+768   768   0    blocks.0.att.key.weight
+768   768   1.0  blocks.0.att.value.weight
+768   768   0    blocks.0.att.receptance.weight
+768   768   0    blocks.0.att.output.weight
+3072  768   1.0  blocks.0.ffn.key.weight
+768   768   0    blocks.0.ffn.receptance.weight
+768   3072  0    blocks.0.ffn.value.weight
+768   768   0    blocks.1.att.key.weight
+768   768   1.0  blocks.1.att.value.weight
+768   768   0    blocks.1.att.receptance.weight
+768   768   0    blocks.1.att.output.weight
+3072  768   1.0  blocks.1.ffn.key.weight
+768   768   0    blocks.1.ffn.receptance.weight
+768   3072  0    blocks.1.ffn.value.weight
+768   768   0    blocks.2.att.key.weight
+768   768   1.0  blocks.2.att.value.weight
+768   768   0    blocks.2.att.receptance.weight
+768   768   0    blocks.2.att.output.weight
+3072  768   1.0  blocks.2.ffn.key.weight
+768   768   0    blocks.2.ffn.receptance.weight
+768   3072  0    blocks.2.ffn.value.weight
+768   768   0    blocks.3.att.key.weight
+768   768   1.0  blocks.3.att.value.weight
+768   768   0    blocks.3.att.receptance.weight
+768   768   0    blocks.3.att.output.weight
+3072  768   1.0  blocks.3.ffn.key.weight
+768   768   0    blocks.3.ffn.receptance.weight
+768   3072  0    blocks.3.ffn.value.weight
+768   768   0    blocks.4.att.key.weight
+768   768   1.0  blocks.4.att.value.weight
+768   768   0    blocks.4.att.receptance.weight
+768   768   0    blocks.4.att.output.weight
+3072  768   1.0  blocks.4.ffn.key.weight
+768   768   0    blocks.4.ffn.receptance.weight
+768   3072  0    blocks.4.ffn.value.weight
+768   768   0    blocks.5.att.key.weight
+768   768   1.0  blocks.5.att.value.weight
+768   768   0    blocks.5.att.receptance.weight
+768   768   0    blocks.5.att.output.weight
+3072  768   1.0  blocks.5.ffn.key.weight
+768   768   0    blocks.5.ffn.receptance.weight
+768   3072  0    blocks.5.ffn.value.weight
+768   768   0    blocks.6.att.key.weight
+768   768   1.0  blocks.6.att.value.weight
+768   768   0    blocks.6.att.receptance.weight
+768   768   0    blocks.6.att.output.weight
+3072  768   1.0  blocks.6.ffn.key.weight
+768   768   0    blocks.6.ffn.receptance.weight
+768   3072  0    blocks.6.ffn.value.weight
+768   768   0    blocks.7.att.key.weight
+768   768   1.0  blocks.7.att.value.weight
+768   768   0    blocks.7.att.receptance.weight
+768   768   0    blocks.7.att.output.weight
+3072  768   1.0  blocks.7.ffn.key.weight
+768   768   0    blocks.7.ffn.receptance.weight
+768   3072  0    blocks.7.ffn.value.weight
+768   768   0    blocks.8.att.key.weight
+768   768   1.0  blocks.8.att.value.weight
+768   768   0    blocks.8.att.receptance.weight
+768   768   0    blocks.8.att.output.weight
+3072  768   1.0  blocks.8.ffn.key.weight
+768   768   0    blocks.8.ffn.receptance.weight
+768   3072  0    blocks.8.ffn.value.weight
+768   768   0    blocks.9.att.key.weight
+768   768   1.0  blocks.9.att.value.weight
+768   768   0    blocks.9.att.receptance.weight
+768   768   0    blocks.9.att.output.weight
+3072  768   1.0  blocks.9.ffn.key.weight
+768   768   0    blocks.9.ffn.receptance.weight
+768   3072  0    blocks.9.ffn.value.weight
+768   768   0    blocks.10.att.key.weight
+768   768   1.0  blocks.10.att.value.weight
+768   768   0    blocks.10.att.receptance.weight
+768   768   0    blocks.10.att.output.weight
+3072  768   1.0  blocks.10.ffn.key.weight
+768   768   0    blocks.10.ffn.receptance.weight
+768   3072  0    blocks.10.ffn.value.weight
+768   768   0    blocks.11.att.key.weight
+768   768   1.0  blocks.11.att.value.weight
+768   768   0    blocks.11.att.receptance.weight
+768   768   0    blocks.11.att.output.weight
+3072  768   1.0  blocks.11.ffn.key.weight
+768   768   0    blocks.11.ffn.receptance.weight
+768   3072  0    blocks.11.ffn.value.weight
+65525 768   0.5  head.weight
+Save to out_192M/rwkv-init.pth...
+Traceback (most recent call last):
+  File "/storage/ice1/0/5/rbrock8/scalable-RWKV/RWKV-v4neo/train.py", line 362, in <module>
+    trainer = Trainer.from_argparse_args(
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 1952, in from_argparse_args
+    return from_argparse_args(cls, args, **kwargs)
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/utilities/argparse.py", line 66, in from_argparse_args
+    return cls(**trainer_kwargs)
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/utilities/argparse.py", line 348, in insert_env_defaults
+    return fn(self, **kwargs)
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/trainer/trainer.py", line 420, in __init__
+    self._accelerator_connector = AcceleratorConnector(
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py", line 204, in __init__
+    self._set_parallel_devices_and_init_accelerator()
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py", line 579, in _set_parallel_devices_and_init_accelerator
+    self._devices_flag = accelerator_cls.parse_devices(self._devices_flag)
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/pytorch_lightning/accelerators/cuda.py", line 80, in parse_devices
+    return _parse_gpu_ids(devices, include_cuda=True)
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/lightning_fabric/utilities/device_parser.py", line 104, in _parse_gpu_ids
+    return _sanitize_gpu_ids(gpus, include_cuda=include_cuda, include_mps=include_mps)
+  File "/home/hice1/rbrock8/.conda/envs/rwkv_4neo/lib/python3.10/site-packages/lightning_fabric/utilities/device_parser.py", line 136, in _sanitize_gpu_ids
+    raise MisconfigurationException(
+lightning_fabric.utilities.exceptions.MisconfigurationException: You requested gpu: [0, 1]
+ But your machine only has: [0]
+srun: error: atl1-1-02-010-36-0: task 0: Exited with exit code 1
+---------------------------------------
+Begin Slurm Epilog: Dec-03-2023 20:49:09
+Job ID:        247522
+Array Job ID:  _4294967294
+User ID:       rbrock8
+Account:       no-dept
+Job name:      test_192M_V100
+Resources:     cpu=1,gres/gpu:v100=1,mem=4G,node=1
+Rsrc Used:     cput=00:01:45,vmem=4824K,walltime=00:01:45,mem=4484K,energy_used=0
+Partition:     coc-gpu
+Nodes:         atl1-1-02-010-36-0
+---------------------------------------
