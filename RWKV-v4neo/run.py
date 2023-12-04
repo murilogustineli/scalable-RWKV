@@ -20,14 +20,14 @@ args = types.SimpleNamespace()
 # Step 1: set model & config (use v4 to run your trained-from-scratch models. v4 and v4neo are compatible)
 ########################################################################################################
 
-args.RUN_DEVICE = "cuda" # 'cuda' // 'cpu' (already fast)
-args.FLOAT_MODE = "fp16" # fp16 (good for GPU, does not work for CPU) // fp32 (good for CPU) // bf16 (less accurate, but works for CPU)
+args.RUN_DEVICE = "cpu" # 'cuda' // 'cpu' (already fast)
+args.FLOAT_MODE = "fp32" # fp16 (good for GPU, does not work for CPU) // fp32 (good for CPU) // bf16 (less accurate, but works for CPU)
 
 # if args.RUN_DEVICE == "cuda":
 #     os.environ["RWKV_RUN_BACKEND"] = 'nvfuser' # !!!BUGGY!!! wrong output
 os.environ["RWKV_JIT_ON"] = '1' # '1' or '0'. very useful for GPU/CPU fp32, but might be harmful for GPU fp16. please benchmark !!!
 
-TOKEN_MODE = "pile"
+TOKEN_MODE = "char"
 WORD_NAME = [
     "20B_tokenizer.json",
     "20B_tokenizer.json",
@@ -58,9 +58,9 @@ vocab_size = 50277
 # n_embd = 2560
 # ctx_len = 1024
 
-MODEL_NAME = '/fsx/BlinkDL/HF-MODEL/rwkv-4-pile-7b/RWKV-4-Pile-7B-20221115-8047'
-n_layer = 32
-n_embd = 4096
+MODEL_NAME = 'out_92M/rwkv-0'
+n_layer = 12
+n_embd = 512
 ctx_len = 1024
 
 args.MODEL_NAME = MODEL_NAME
@@ -118,7 +118,7 @@ context = "\nIn a shocking finding, scientist discovered a herd of dragons livin
 
 # User:''' # type your question here
 
-NUM_TRIALS = 999
+NUM_TRIALS = 5
 LENGTH_PER_TRIAL = 333
 
 TEMPERATURE = 1.0
