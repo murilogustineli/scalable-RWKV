@@ -113,3 +113,23 @@ __TO CONNECT TO 4 RTX_6000s (put in your own email):__
 ```
 salloc -N1 --mem-per-gpu=16G -t5:00:00 --gres=gpu:RTX_6000:4 --ntasks-per-node=4 --mail-type=BEGIN,END,FAIL --mail-user=<gatech_user_name>@gatech.edu
 ```
+
+## TRAINING NOTES
+You can submit batch jobs by doing:
+`sbatch batch_job.sbatch`
+
+There are two `.sbatch` files in the repo (already in main). One is set up for V100 and the other is set up for A100. The V100 has VRAM specified. Both assume 2 GPUS are being allocated for the job.
+
+You’ll need to configure the following parameters to your desired values:
+- `n_layer`: _default_=`6`, _type_=`int`
+- `n_embd`: _default_=`512`, _type_=`int`
+- `ctx_len`: _default_=`1024`, _type_=`int`
+- `proj_dir`: _default_=`"out"`, _type_=`str`
+
+
+__IMPORTANT__.
+
+Format proj_dir as "out_modelsize_gpu_ctxsize
+Example: “out_92M_V100_ctx1024"
+
+**YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
