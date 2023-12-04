@@ -129,7 +129,7 @@ You’ll need to configure the following parameters to your desired values:
 
 __IMPORTANT__.
 
-Format proj_dir as "out_modelsize_gpu_ctxsize
-Example: “out_92M_V100_ctx1024"
+Format proj_dir as `"out_modelsize_gpu_ctxsize"`
+- Example: `"out_92M_V100_ctx1024"`
 
 **YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
