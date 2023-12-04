@@ -58,7 +58,7 @@ vocab_size = 50277
 # n_embd = 2560
 # ctx_len = 1024
 
-MODEL_NAME = 'out_92M/rwkv-0'
+MODEL_NAME = 'out_92M_V100_ctx1024/rwkv-0'
 n_layer = 12
 n_embd = 512
 ctx_len = 1024
@@ -81,7 +81,7 @@ os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 # context = 'A'
 # context = "\nIn the"
 # context = '\nSugar:'
-context = "\nIn a shocking finding, scientist discovered a herd of dragons living in a remote, previously unexplored valley, in Tibet. Even more surprising to the researchers was the fact that the dragons spoke perfect Chinese."
+context = '\nOne day, a boy named Jack was being chased by an orange monster with sharp jagged teeth. The monster caught Jack and ripped his arms and legs off. There was blood everywhere and Jack screamed "'
 
 # context = "\n深圳是" # test Chinese
 # context = "\n東京は" # test Japanese
