@@ -128,7 +128,7 @@ You’ll need to configure the following parameters to your desired values:
 
 __IMPORTANT__.
 
-Format proj_dir as `"out_modelsize_gpu_ctxSize_lrSize"`
+Format `proj_dir` as `"out_modelsize_gpu_ctxSize_lrSize"`.
 - Example: `"out_92M_V100_ctx1024_lr6e-4"`
 
 **YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
@@ -142,3 +142,5 @@ To see your queued jobs:
 To see your active jobs in the browser:
 1. Access https://ondemand-ice.pace.gatech.edu/pun/sys/dashboard while connected to the VPN.
 2. Click on "Jobs" at the top of the page, then "Active jobs"
+
+### Check node once connected
