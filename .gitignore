@@ -3,3 +3,4 @@ RWKV-v4neo/src/__pycache__/*
 RWKV-v4neo/out/*
 /RWKV-v4neo/out/*
 RWKV-v4neo/*.out
+RWKV-v4neo/analysis_rb.ipynb
