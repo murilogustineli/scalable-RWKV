@@ -58,10 +58,10 @@ vocab_size = 50277
 # n_embd = 2560
 # ctx_len = 1024
 
-MODEL_NAME = 'out_92M_V100_ctx1024/rwkv-0'
-n_layer = 12
+MODEL_NAME = 'out_72M_V100_ctx512_lr1e-3/rwkv-0'
+n_layer = 6
 n_embd = 512
-ctx_len = 1024
+ctx_len = 512
 
 args.MODEL_NAME = MODEL_NAME
 args.n_layer = n_layer
@@ -81,7 +81,14 @@ os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 # context = 'A'
 # context = "\nIn the"
 # context = '\nSugar:'
-context = '\nOne day, a boy named Jack was being chased by an orange monster with sharp jagged teeth. The monster caught Jack and ripped his arms and legs off. There was blood everywhere and Jack screamed "'
+# One day, a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp. Lily wanted to share the needle with her mom, so she
+# could sew a button on her shirt. Lily went to her mom and said, \"Mom, I found this needle. Can you share it with me and sew my shirt?\" Her mom smiled and said, \"Yes, Lily, we can share
+# the needle and fix your shirt.\" Together, they shared the needle and sewed the button on Lily's shirt. It was not difficult for them because they were sharing and helping each other. Aft
+# er they finished, Lily thanked her mom for sharing the needle and fixing her shirt. They both felt happy because they had shared and worked together."
+
+# context = '\nOne day, a boy named Jack was being chased by an orange monster with sharp jagged teeth. The monster caught Jack and ripped his arms and legs off. There was blood everywhere and Jack screamed "'
+
+context = "\nOne day, a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp. Lily wanted to share the needle with her mom, so she could sew a button on her shirt. Lily went to her mom and said, \"Mom, I found this needle. Can you share it with me and sew my shirt?\" Her mom smiled and said, \""
 
 # context = "\n深圳是" # test Chinese
 # context = "\n東京は" # test Japanese
@@ -118,7 +125,7 @@ context = '\nOne day, a boy named Jack was being chased by an orange monster wit
 
 # User:''' # type your question here
 
-NUM_TRIALS = 5
+NUM_TRIALS = 1
 LENGTH_PER_TRIAL = 333
 
 TEMPERATURE = 1.0
