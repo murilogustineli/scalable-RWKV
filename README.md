@@ -114,6 +114,11 @@ format --gres=gpu: gpu_type:num_gpus
     - `--gres=gpu:1 -C A100-80GB` or `-G 1 -C A100-80GB` for an A100 with 80 GB of memory
     - maximum 2 A100 per node with AMD CPUs
 
+__TO CONNECT TO 2 V100s (put in your own email):__
+```
+salloc -N1 --mem-per-gpu=32G -t8:00:00 --gres=gpu:V100:2 --ntasks-per-node=1 --mail-type=BEGIN,END,FAIL --mail-user=<gatech_user_name>@gatech.edu
+```
+
 __TO CONNECT TO 4 RTX_6000s (put in your own email):__
 ```
 salloc -N1 --mem-per-gpu=16G -t5:00:00 --gres=gpu:RTX_6000:4 --ntasks-per-node=4 --mail-type=BEGIN,END,FAIL --mail-user=<gatech_user_name>@gatech.edu
@@ -133,7 +138,7 @@ You’ll need to configure the following parameters to your desired values:
 
 __IMPORTANT__.
 
-Format proj_dir as `"out_modelsize_gpu_ctxSize_lrSize"`
+Format `proj_dir` as `"out_modelsize_gpu_ctxSize_lrSize"`.
 - Example: `"out_92M_V100_ctx1024_lr6e-4"`
 
 **YOU NEED TO REMEMBER TO ADD YOUR `.out` FILE TO YOUR `out` FOLDER AFTER TRAINING.** The `"Report-######"` file. This has important information that will be used to make learning curves, track time, etc.
@@ -147,3 +152,5 @@ To see your queued jobs:
 To see your active jobs in the browser:
 1. Access https://ondemand-ice.pace.gatech.edu/pun/sys/dashboard while connected to the VPN.
 2. Click on "Jobs" at the top of the page, then "Active jobs"
+
+### Check node once connected
