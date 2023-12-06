@@ -49,11 +49,11 @@ conda install -y -c conda-forge cudatoolkit=11.7 cudatoolkit-dev=11.7
 
 3. Setting up pytorch 1.13.1 with cuda 1.17 specifically
 ```
-python -m pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117`
+python -m pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 
-python -m pip install deepspeed==0.7.0 pytorch-lightning==1.9.5`
+python -m pip install deepspeed==0.7.0 pytorch-lightning==1.9.5
 
-python -m pip install ninja wandb transformers`
+python -m pip install ninja wandb transformers
 ```
 
 You can double check your symlink is working properly at this point with this command:
