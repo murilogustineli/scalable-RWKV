@@ -58,10 +58,21 @@ vocab_size = 50277
 # n_embd = 2560
 # ctx_len = 1024
 
-MODEL_NAME = 'out_72M_V100_ctx512_lr1e-3/rwkv-0'
-n_layer = 6
-n_embd = 512
-ctx_len = 512
+# MODEL_NAME = 'out_003M_ctx128_1e-2/rwkv-1'
+MODEL_NAME = 'out_007M_ctx256_1e-2/rwkv-1'
+# MODEL_NAME = 'out_169M_RTX6000_ctx_512_6e-4/rwkv-0'
+if MODEL_NAME == 'out_003M_ctx128_1e-2/rwkv-1':
+    n_layer = 2
+    n_embd = 32
+    ctx_len = 128
+elif MODEL_NAME == 'out_007M_ctx256_1e-2/rwkv-1':
+    n_layer = 4
+    n_embd = 64
+    ctx_len = 256
+elif MODEL_NAME == 'out_169M_RTX6000_ctx_512_6e-4/rwkv-0':
+    n_layer = 12
+    n_embd = 768
+    ctx_len = 512
 
 args.MODEL_NAME = MODEL_NAME
 args.n_layer = n_layer
@@ -88,8 +99,8 @@ os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 
 # context = '\nOne day, a boy named Jack was being chased by an orange monster with sharp jagged teeth. The monster caught Jack and ripped his arms and legs off. There was blood everywhere and Jack screamed "'
 
-context = "\nOne day, a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp. Lily wanted to share the needle with her mom, so she could sew a button on her shirt. Lily went to her mom and said, \"Mom, I found this needle. Can you share it with me and sew my shirt?\" Her mom smiled and said, \""
-
+# context = "\nOne day, a little girl named Lily found a needle in her room. She knew it was difficult to play with it because it was sharp. Lily wanted to share the needle with her mom, so she could sew a button on her shirt. Lily went to her mom and said, \"Mom, I found this needle. Can you share it with me and sew my shirt?\" Her mom smiled and said, \""
+context = "\nOne day, a little boy named Sebastian wanted to decorate his room. He climbed up in to the attic and found a box filled with"
 # context = "\n深圳是" # test Chinese
 # context = "\n東京は" # test Japanese
 
@@ -125,10 +136,10 @@ context = "\nOne day, a little girl named Lily found a needle in her room. She k
 
 # User:''' # type your question here
 
-NUM_TRIALS = 1
-LENGTH_PER_TRIAL = 333
+NUM_TRIALS = 5
+LENGTH_PER_TRIAL = 500
 
-TEMPERATURE = 1.0
+TEMPERATURE = 1
 top_p = 0.8
 top_p_newline = 0.9  # only used in TOKEN_MODE = char
 
