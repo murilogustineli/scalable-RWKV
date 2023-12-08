@@ -35,7 +35,7 @@ ctx_len = 1024
 
 
 NUM_TRIALS = 5
-LENGTH_PER_TRIAL = 333
+LENGTH_PER_TRIAL = 100
 
 TEMPERATURE = 1.0
 top_p = 0.8
@@ -73,7 +73,7 @@ os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 with open('GPT4-eval/20Prompts.txt', 'r') as file:
     contents = file.read()
 
-paragraphs = contents.split('\n\n')
+paragraphs = contents.split('<|endoftext|>')
 
 contexts = [paragraph.strip() for paragraph in paragraphs if paragraph.strip()]
 
@@ -87,11 +87,10 @@ for k,v in modelDetail.items():
     args.n_layer = v[1]
     args.n_embd = v[2]
     
-    print(f'\nUsing {args.RUN_DEVICE.upper()}. Loading {MODEL_NAME}...')
+    # print(f'\nUsing {args.RUN_DEVICE.upper()}. Loading {MODEL_NAME}...')
     model = RWKV_RNN(args)
-    # print(f'\nOptimizing speed...')
     out, _ = model.forward([187], None)
-    print(f'\nLoading tokenizer {WORD_NAME}...')
+    # print(f'\nLoading tokenizer {WORD_NAME}...')
     tokenizer = TOKENIZER(WORD_NAME, UNKNOWN_CHAR=UNKNOWN_CHAR)
 
     if TOKEN_MODE == "pile":
@@ -99,10 +98,10 @@ for k,v in modelDetail.items():
 
     print(f'curent model is: {k}, with {v[1]} layers and {v[2]} embedding dimensions')
     
-
+    count = 0
     for context in contexts:
-
-        print(("-" * 50))
+        count += 1
+        if not count % 10: print(f"current processing prompt number: {count}")
         # print('current context is :', context)
         if tokenizer.charMode:
             context = tokenizer.refine_context(context)
@@ -176,12 +175,16 @@ for k,v in modelDetail.items():
                     # print(char, end="", flush=True)
                     holder += char
                     out_last = i+1
+
+        # we fixed the trial length, some stories finish early, meaning, it will genreate another story to fullfill the trail length requirement, so we will have to partition the first story if the inference contains more than one story
+
+        extractFirst = lambda text: text.split("<|endoftext|>")[0] if "<|endoftext|>" in text else text
         
         PREFIX = "the following exercise, the student is given a beginning of a story. The student needs to complete it into a full story. The exercise tests the student's language abilities and creativity. The symbol *** marks the separator between the prescribed beginning and the student's completion:\n"
 
         POSTFIX = "\nPlease provide your general assessment about the part written by the student (the one after the *** symbol).Is it gramatically correct? Is it consistent with the beginning of the story? Pay special attention to whether the student manages to complete the sentence which is split in the middle by the separator ***. Now, grade the student's completion in terms of grammar, creativity, consistency with the story's beginning and whether the plot makes sense. Moreover, please provide your best guess of what the age of the student might be, as reflected from the completion. Choose from possible age groups: A: 3 or under. B: 4-5. C: 6-7. D: 8-9. E: 10-12. F: 13-16."
         
-        d[v[0]].append(PREFIX + context.strip() + "*** " + holder.strip() + POSTFIX)
+        d[v[0]].append(PREFIX + context.strip() + "*** " + extractFirst(holder.strip()) + POSTFIX)
         # record_time('total')
         # print(f'\n\n{time_slot}\n\n')
         # print(
