@@ -5,7 +5,10 @@ import random
 def getRandom20Stories(content, seed):
     random.seed(seed)
     stories = content.split('- |-')[1:]
-    return [stories[i] for i in random.sample(range(len(stories)), 20)]
+    prompt = []
+    for i in random.sample(range(len(stories)), 20):
+        prompt.append(stories[i] + "<|endoftext|>")
+    return prompt
 
 def fetchStories():
     try:
@@ -28,7 +31,7 @@ def getGptEval():
     os.makedirs(gptEvalDir, exist_ok=True)
     prompts = getRandom20Stories(fetchStories(), 42)
     with open('GPT4-eval/20Prompts.txt', 'w', encoding='utf-8') as file:
-                file.write("\n".join(prompts))
+                file.write("".join(prompts))
 
 
 if __name__ == '__main__':
