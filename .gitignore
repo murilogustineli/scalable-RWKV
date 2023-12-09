@@ -6,4 +6,4 @@ RWKV-v4neo/*.out
 RWKV-v4neo/analysis_rb.ipynb
 RWKV-v4neo/*/*.out
 RWKV-v4neo/*/*.pth
-
+RWKV-v4neo/*out*/*.txt
