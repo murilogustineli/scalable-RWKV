@@ -61,9 +61,9 @@ You can double check your symlink is working properly at this point with this co
 pace-quota
 ```
 
-4. If you plan on using notebooks (.ipynb), you'll need to pip install the following:
+4. If you plan on using notebooks (.ipynb) and to run metrics, you'll need to pip install the following:
 ```
-pip install matplotlib ipython ipykernel notebook
+pip install matplotlib ipython ipykernel notebook rouge-score
 ```
 
 
