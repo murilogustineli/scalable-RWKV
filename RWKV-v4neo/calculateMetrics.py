@@ -37,7 +37,7 @@ n_layer = 12
 n_embd = 512
 ctx_len = 1024
 
-LENGTH_PER_TRIAL = 100
+LENGTH_PER_TRIAL = 300
 
 TEMPERATURE = 1.0
 top_p = 0.8
@@ -45,25 +45,11 @@ top_p_newline = 0.9  # only used in TOKEN_MODE = char
 
 DEBUG_DEBUG = False
 
-# 3.2, 6.7, 10.1, 14.2, 30.9, 36.0, 72.4, 92.4, 169
-# name, layer, embd
-model_details = {
-     '3m': ['out_003M_ctx128_1e-2/rwkv-1', 2, 32],
-     '7m': ['out_007M_V100_ctx512_lr1e-2/rwkv-1', 4, 64],
-    '10m': ['out_010M_ctx256_5e-3/rwkv-1', 4, 96],
-    '14m': ['out_014M_V100/rwkv-1', 6, 128],
-    '31m': ['out_031M_V100/rwkv-1', 6, 256],
-    '36m': ['out_036M_A100_ctx512_lr1e-3/rwkv-1', 12, 256],
-    '72m': ['out_072M_V100_ctx512_lr1e-3/rwkv-1', 6, 512],
-    '92m': ['out_092M_A100_ctx512_lr6e-4/rwkv-1', 6, 512],
-    '169m': ['out_169M_A100_ctx512_lr6e-4/rwkv-1', 12, 768]
-}
-
 # 3.2, 10.1, 30.9, 72.4, 169
 # name, layer, embd
 metric_model_details = {
-    '3m': ['out_003M_ctx128_1e-2/rwkv-1', 2, 32],
-    '10m': ['out_010M_ctx256_5e-3/rwkv-1', 4, 96],
+    '3m': ['out_003M_V100_ctx512_lr1e-2/rwkv-1', 2, 32],
+    '10m': ['out_010M_V100_ctx512_lr5e-3/rwkv-1', 4, 96],
     '31m': ['out_031M_V100/rwkv-1', 6, 256],
     '72m': ['out_072M_V100_ctx512_lr1e-3/rwkv-1', 6, 512],
     '169m': ['out_169M_A100_ctx512_lr6e-4/rwkv-1', 12, 768]
@@ -98,10 +84,7 @@ scorer = rouge_scorer.RougeScorer(
 
 metric_model_outputs = {model: [] for model in metric_model_details.keys()}
 
-model_times = {model: [] for model in model_details.keys()}
-
-for k, v in model_details.items():
-    start_time = time.time()
+for k, v in metric_model_details.items():
     args.MODEL_NAME = v[0]
     metric_model_outputs[v[0]] = []
     args.n_layer = v[1]
@@ -202,11 +185,9 @@ for k, v in model_details.items():
         def extractFirst(text): return text.split("<|endoftext|>")[
             0] if "<|endoftext|>" in text else text
 
-        if k in metric_model_outputs:
-            metric_model_outputs[k].append(extractFirst(holder))
+        
+        metric_model_outputs[k].append(extractFirst(holder))
     
-    model_times[k] = (time.time() - start_time) / len(contexts)
-
 rouge_scores = {}
 for model, outputs in metric_model_outputs.items():
     scores = [scorer.score(ref, pred) for ref, pred in zip(stories, outputs)]
@@ -230,6 +211,3 @@ for model, outputs in metric_model_outputs.items():
 
 with open('metrics/bleu_scores.json', 'w') as file:
     json.dump(bleu_scores, file, indent=4)
-
-with open('metrics/model_times.json', 'w') as file:
-    json.dump(model_times, file, indent=4)
