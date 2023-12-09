@@ -8,8 +8,6 @@ import gc
 import torch
 import json
 from src.utils import TOKENIZER
-from rouge_score import rouge_scorer
-from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 
 try:
     os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[1]
@@ -37,12 +35,15 @@ WORD_NAME = [
 UNKNOWN_CHAR = None
 vocab_size = 50277
 
+
 MODEL_NAME = 'out_92M_V100_ctx1024/rwkv-0'
 n_layer = 12
 n_embd = 512
 ctx_len = 1024
 
-LENGTH_PER_TRIAL = 300
+
+NUM_TRIALS = 5
+LENGTH_PER_TRIAL = 100
 
 TEMPERATURE = 1.0
 top_p = 0.8
@@ -50,15 +51,22 @@ top_p_newline = 0.9  # only used in TOKEN_MODE = char
 
 DEBUG_DEBUG = False
 
+
 # 3.2, 10.1, 30.9, 72.4, 169
 # name, layer, embd
-metric_model_details = {
-    '3m': ['out_003M_V100_ctx512_lr1e-2/rwkv-1', 2, 32],
-    '10m': ['out_010M_V100_ctx512_lr5e-3/rwkv-1', 4, 96],
+modelDetail = {
+    '3m': ['out_003M_ctx128_1e-2/rwkv-1', 2, 32],
+    '10m': ['out_010M_ctx256_5e-3/rwkv-1', 4, 96],
     '31m': ['out_031M_V100/rwkv-1', 6, 256],
     '72m': ['out_072M_V100_ctx512_lr1e-3/rwkv-1', 6, 512],
     '169m': ['out_169M_A100_ctx512_lr6e-4/rwkv-1', 12, 768]
 }
+
+
+# MODEL_NAME = 'out_92M_V100_ctx1024/rwkv-0'
+# n_layer = 12
+# n_embd = 512
+# ctx_len = 1024
 
 args.ctx_len = ctx_len
 args.vocab_size = vocab_size
@@ -69,6 +77,7 @@ args.my_pos_emb = 0
 os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 
 ##################################################################
+
 from src.model_run import RWKV_RNN
 
 with open('GPT4-eval/20Prompts.txt', 'r') as file:
@@ -78,20 +87,12 @@ paragraphs = contents.split('<|endoftext|>')
 
 contexts = [paragraph.strip() for paragraph in paragraphs if paragraph.strip()]
 
-with open('data/TinyStories-train.jsonl', 'r') as file:
-    stories = [json.loads(line)['text'] for line in file]
 
-continuations = [story[len(story)//2:] for story in stories]
+d = {}
 
-scorer = rouge_scorer.RougeScorer(
-    ['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
-
-
-metric_model_outputs = {model: [] for model in metric_model_details.keys()}
-
-for k, v in metric_model_details.items():
+for k, v in modelDetail.items():
     args.MODEL_NAME = v[0]
-    metric_model_outputs[v[0]] = []
+    d[v[0]] = []
     args.n_layer = v[1]
     args.n_embd = v[2]
 
@@ -110,8 +111,8 @@ for k, v in metric_model_details.items():
     count = 0
     for context in contexts:
         count += 1
-        # if not count % 10:
-        #     print(f"current processing prompt number: {count}")
+        if not count % 10:
+            print(f"current processing prompt number: {count}")
         # print('current context is :', context)
         if tokenizer.charMode:
             context = tokenizer.refine_context(context)
@@ -187,32 +188,99 @@ for k, v in metric_model_details.items():
                     holder += char
                     out_last = i+1
 
+        # we fixed the trial length, some stories finish early, meaning, it will genreate another story to fullfill the trail length requirement, so we will have to partition the first story if the inference contains more than one story
+
         def extractFirst(text): return text.split("<|endoftext|>")[
             0] if "<|endoftext|>" in text else text
 
-        
-        metric_model_outputs[k].append(extractFirst(holder))
-    
-rouge_scores = {}
-for model, outputs in metric_model_outputs.items():
-    scores = [scorer.score(ref, pred) for ref, pred in zip(stories, outputs)]
-    rouge_scores[model] = scores
+        PREFIX = "For the following exercise, the student is given a beginning of a story. The student needs to complete it into a full story. The exercise tests the student's language abilities and creativity. The symbol *** marks the separator between the prescribed beginning and the student's completion:\n"
 
-os.makedirs('metrics', exist_ok=True)
+        POSTFIX = "\nPlease provide your general assessment about the part written by the student (the one after the *** symbol). Is it grammatically correct? Is it consistent with the beginning of the story? Pay special attention to whether the student manages to complete the sentence which is split in the middle by the separator ***. Now, grade  with scores out of 10, the student's completion in terms of grammar, creativity, consistency with the story's beginning and whether the plot makes sense. Moreover, please provide your best guess of what the age of the student might be, as reflected from the completion. Choose from possible age groups: A: 3 or under. B: 4-5. C: 6-7. D: 8-9. E: 10-12. F: 13-16."
 
-with open('metrics/rouge_scores.json', 'w') as file:
-    json.dump(rouge_scores, file, indent=4)
+        d[v[0]].append(PREFIX + context.strip() + "*** " +
+                       extractFirst(holder.strip()) + POSTFIX)
+        # record_time('total')
+        # print(f'\n\n{time_slot}\n\n')
+        # print(
+        #     f"\n\n--- preprocess {round(time_slot['preprocess'], 2)}s, generation {round(time_slot['total']-time_slot['preprocess'], 2)}s ", end = ''
+        # )
 
-bleu_scores = {}
+with open('GPT4-eval/inference.json', 'w') as json_file:
+    json.dump(d, json_file, indent=4)
 
-smooth = SmoothingFunction()
+# def record_time(name):
+#     if name not in time_slot:
+#         time_slot[name] = 1e20
+#     tt = (time.time_ns() - time_ref) / 1e9
+#     if tt < time_slot[name]:
+#         time_slot[name] = tt
+##################################################################
 
-for model, outputs in metric_model_outputs.items():
-    scores = [sentence_bleu([ref.split()], pred.split(),
-                            weights=(0.5, 0.5, 0, 0),
-                            smoothing_function=smooth.method1)
-              for ref, pred in zip(continuations, outputs)]
-    bleu_scores[model] = scores
 
-with open('metrics/bleu_scores.json', 'w') as file:
-    json.dump(bleu_scores, file, indent=4)
+# time_slot = {}
+# time_ref = time.time_ns()
+
+
+# init_state = None
+# init_out = None
+# state = None
+# out = None
+
+# for TRIAL in range(1 if DEBUG_DEBUG else NUM_TRIALS):
+#         print(("-" * 50) + '\n' + context, end="")
+
+#         time_ref = time.time_ns()
+#         ctx = src_ctx.copy()
+
+#         if TRIAL == 0:
+#             for i in range(src_len):
+#                 x = ctx[: i + 1]
+#                 if i == src_len - 1:
+#                     init_out, init_state = model.forward(x, init_state)
+#                 else:
+#                     init_state = model.forward(x, init_state, preprocess_only=True)
+#             gc.collect()
+#             torch.cuda.empty_cache()
+
+#         record_time('preprocess')
+#         out_last = src_len
+#         for i in range(src_len, src_len + (1 if DEBUG_DEBUG else LENGTH_PER_TRIAL)):
+#             x = ctx[: i + 1]
+#             x = x[-ctx_len:]
+
+#             if i == src_len:
+#                 out = init_out.clone()
+#                 state = init_state.clone()
+#             else:
+#                 out, state = model.forward(x, state)
+#             if DEBUG_DEBUG:
+#                 print("model", np.array(x), "==>", np.array(out), np.max(out.cpu().numpy()), np.min(out.cpu().numpy()))
+#             if TOKEN_MODE == "pile":
+#                 out[0] = -999999999  # disable <|endoftext|>
+
+#             ttt = tokenizer.sample_logits(
+#                 out,
+#                 x,
+#                 ctx_len,
+#                 temperature=TEMPERATURE,
+#                 top_p_usual=top_p,
+#                 top_p_newline=top_p_newline,
+#             )
+#             ctx += [ttt]
+
+#             if tokenizer.charMode:
+#                 char = tokenizer.itos[ttt]
+#                 print(char, end="", flush=True)
+#             else:
+#                 char = tokenizer.tokenizer.decode(ctx[out_last:])
+#                 if '\ufffd' not in char: # is valid utf8 string?
+#                     print(char, end="", flush=True)
+#                     out_last = i+1
+
+#         record_time('total')
+#         # print(f'\n\n{time_slot}\n\n')
+#         print(
+#             f"\n\n--- preprocess {round(time_slot['preprocess'], 2)}s, generation {round(time_slot['total']-time_slot['preprocess'], 2)}s ", end = ''
+#         )
+
+# print(("-" * 50) + '\n')
