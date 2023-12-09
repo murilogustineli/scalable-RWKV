@@ -17,7 +17,7 @@ torch.backends.cudnn.allow_tf32 = True
 torch.backends.cuda.matmul.allow_tf32 = True
 np.set_printoptions(precision=4, suppress=True, linewidth=200)
 args = types.SimpleNamespace()
-args.RUN_DEVICE = "cpu"
+args.RUN_DEVICE = "cuda"
 args.FLOAT_MODE = "fp32"
 os.environ["RWKV_JIT_ON"] = '1'
 TOKEN_MODE = "char"
@@ -36,7 +36,7 @@ ctx_len = 1024
 
 
 NUM_TRIALS = 5
-LENGTH_PER_TRIAL = 100
+LENGTH_PER_TRIAL = 300
 
 TEMPERATURE = 1.0
 top_p = 0.8
@@ -48,8 +48,8 @@ DEBUG_DEBUG = False
 # 3.2, 10.1, 30.9, 72.4, 169
 # name, layer, embd
 modelDetail = {
-    '3m': ['out_003M_ctx128_1e-2/rwkv-1', 2, 32],
-    '10m': ['out_010M_ctx256_5e-3/rwkv-1', 4, 96],
+    '3m': ['out_003M_V100_ctx512_lr1e-2/rwkv-1', 2, 32],
+    '10m': ['out_010M_V100_ctx512_lr5e-3/rwkv-1', 4, 96],
     '31m': ['out_031M_V100/rwkv-1', 6, 256],
     '72m': ['out_072M_V100_ctx512_lr1e-3/rwkv-1', 6, 512],
     '169m': ['out_169M_A100_ctx512_lr6e-4/rwkv-1', 12, 768]
@@ -198,8 +198,8 @@ for k, v in modelDetail.items():
         #     f"\n\n--- preprocess {round(time_slot['preprocess'], 2)}s, generation {round(time_slot['total']-time_slot['preprocess'], 2)}s ", end = ''
         # )
 
-with open('GPT4-eval/inference.json', 'w') as json_file:
-    json.dump(d, json_file, indent=4)
+with open('GPT4-eval/inference.json', 'w', encoding ='utf8') as json_file: 
+    json.dump(d, json_file, ensure_ascii = False, indent=4)
 
 # def record_time(name):
 #     if name not in time_slot:
