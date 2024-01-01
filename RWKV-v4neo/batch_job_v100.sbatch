@@ -1,12 +1,7 @@
 #!/bin/bash
 
-<<<<<<< HEAD
 #SBATCH -JTrain_36M_V100_ctx512_lr1e-3                       # Job name
 #SBATCH -N1 -t8:00:00 --gres=gpu:2 -C V100-32GB --ntasks-per-node=2 --mail-type=BEGIN,END,FAIL --mail-user=murilogustineli@gatech.edu
-=======
-#SBATCH -JTrain_72M_V100_ctx512_lr1e-3                       # Job name
-#SBATCH -N1 -t8:00:00 --gres=gpu:2 -C V100-32GB --ntasks-per-node=2 --mail-type=BEGIN,END,FAIL --mail-user=rbrock8@gatech.edu
->>>>>>> ada1d4377f5114022cbebaed87af350e86de872f
 #SBATCH -oReport-%j.out                         # Combined output and error messages file
 
 cd ~/scratch/scalable-RWKV/RWKV-v4neo/         # Change to working directory
@@ -14,11 +9,7 @@ nvidia-smi
 
 module load anaconda3                           # Load module dependencies
 conda activate rwkv_4neo
-<<<<<<< HEAD
 python train.py --load_model "" --wandb "" --proj_dir "out_36M_V100_ctx512_lr1e-3" \
-=======
-python train.py --load_model "" --wandb "" --proj_dir "out_72M_V100_ctx512_lr1e-3" \
->>>>>>> ada1d4377f5114022cbebaed87af350e86de872f
 --data_file "data/TinyStories-train" --data_type "binidx" --vocab_size 50277 \
 --ctx_len 512 --epoch_steps 66200 --epoch_count 4 --epoch_begin 0 --epoch_save 1 \
 --micro_bsz 16 --n_layer 12 --n_embd 256 --pre_ffn 0 --head_qk 0 \
