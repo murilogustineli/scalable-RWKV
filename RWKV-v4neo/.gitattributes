@@ -1,4 +1,0 @@
-*.txt filter=lfs diff=lfs merge=lfs -text
-*.idx filter=lfs diff=lfs merge=lfs -text
-*.bin filter=lfs diff=lfs merge=lfs -text
-*.jsonl filter=lfs diff=lfs merge=lfs -text
